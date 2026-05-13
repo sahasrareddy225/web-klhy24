@@ -6,6 +6,8 @@ import './index.css';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { HeaderMegaMenu } from './Components/Navbar/HeaderMegaMenu';
 import  ProfilePage  from './Pages/Profile/ProfilePage';
+import UrlShortener from './Pages/ShortUrl/UrlShortener'; 
+import UrlHistory from './Pages/ShortUrl/UrlHistory'; 
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css';
@@ -21,6 +23,8 @@ function App() {
             <Route path='/' element={<Home/>}/>
             <Route path='/login' element={<LoginPage/>} />
             <Route path='/profile' element={<ProfilePage/>} />
+            <Route path='/shorten' element={<UrlShortener/>} />
+            <Route path='/history' element={<UrlHistory/>} />
             <Route element={<PrivateRoute/>}>
 
             </Route>
