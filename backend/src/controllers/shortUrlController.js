@@ -37,17 +37,47 @@ export const createShortUrl = async (req, res) => {
 
 
 export const redirectToLongUrl = async (req, res) => {
-   try {
-       const { shortCode } = req.params;
-       const record = await ShortURL.findOne({ shortCode });
-       if (!record) {
-           return res.status(404).json({ message: "Invalid ShortCode" });
-       }
-       res.redirect(record.originalUrl);
-   } catch (error) {
-       return res.status(500).json({ message: "Internal Server Error" });
-   }
+    try {
+        const { shortCode } = req.params;
+        const record = await ShortURL.findOneAndUpdate(
+            { shortCode },
+            { $inc: { clickCount: 1 } },
+            { new: true }
+        );
+        if (!record) {
+            return res.status(404).json({ message: "Invalid ShortCode" });
+        }
+        res.redirect(record.originalUrl);
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
+export const updateShortUrl = async (req, res) => {
+    try {
+        const { shortCode } = req.params;
+        const { originalUrl, title } = req.body;
+
+        const record = await ShortURL.findOne({ shortCode });
+        if (!record) {
+            return res.status(404).json({ message: "Short URL not found" });
+        }
+
+        // Ensure only the owner can edit
+        if (record.userId?.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Forbidden: You don't own this URL" });
+        }
+
+        const updated = await ShortURL.findOneAndUpdate(
+            { shortCode },
+            { ...(originalUrl && { originalUrl }), ...(title && { title }) },
+            { new: true }
+        );
+
+        return res.status(200).json(updated);
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
 
 export default createShortUrl;

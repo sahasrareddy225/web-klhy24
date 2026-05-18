@@ -11,6 +11,7 @@ const URLHistory = () => {
    const [shortCode, setShortCode] = useState("");
    const [rows, setRows] = useState([]);
 
+   const service = new Service();
 
    useEffect(() => {
        if(data && data.length > 0) {
@@ -57,7 +58,7 @@ const URLHistory = () => {
        console.log("ENTERED");
        open();
    }
-   const service = new Service();
+   
    const fetchHistory = async () => {
        try {
            const response = await service.get("user/my/urls");

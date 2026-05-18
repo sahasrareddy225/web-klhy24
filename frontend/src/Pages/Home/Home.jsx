@@ -74,9 +74,7 @@ fw={700}
             radius="xl"
             variant="gradient"
             gradient={{ from: "grape", to: "indigo" }}
-            onClick={() =>
-              isLoggedIn ? navigate("/url/shortener") : navigate("/login")
-            }
+            onClick={() => isLoggedIn ? navigate("/shorten") : navigate("/login")}
           >
             Get Started
           </Button>

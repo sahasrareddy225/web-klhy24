@@ -8,7 +8,7 @@ export const protect = async (req, res, next) => {
        return res.status(401).json({ message: "JWT Token is missing" });
    }
    try {
-       const verify = jwt.verify(token, "bfgasdlafdl");
+       const verify = jwt.verify(token, process.env.JWT_SECRET);
        req.user = verify;
        next();
    } catch (error) {
